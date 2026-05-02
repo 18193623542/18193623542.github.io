@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>十年寒窗磨一剑 · 冲刺中高考</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 全局背景与动态效果 */
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: linear-gradient(-45deg, #1a1a2e, #2d1b69, #4a1a7c, #6c1b7e);
+            background-size: 400% 400%;
+            animation: bgMove 15s ease infinite;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            padding: 20px;
+        }
+
+        /* 背景流光动画 */
+        @keyframes bgMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 浮动星光 */
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            animation: starFly 8s linear infinite;
+            opacity: 0.7;
+            z-index: 1;
+        }
+
+        @keyframes starFly {
+            0% { transform: translateY(100vh); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px); opacity: 0; }
+        }
+
+        /* 音乐图片按钮样式 */
+        .music-img {
+            width: 150px;
+            height: auto;
+            display: block;
+            margin: 10px auto;
+            cursor: pointer;
+            z-index: 999;
+            position: relative;
+            object-fit: contain;
+            transition: transform 0.2s;
+        }
+        .music-img:hover {
+            transform: scale(1.1);
+        }
+
+        /* 主容器 */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* 主标题 */
+        .main-title {
+            text-align: center;
+            font-size: 38px;
+            font-weight: bold;
+            margin: 20px 0 40px;
+            text-shadow: 0 0 15px rgba(255,255,255,0.4);
+            letter-spacing: 3px;
+        }
+
+        /* 倒计时竖版超大样式 */
+        .count-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 50px;
+            margin: 60px 0;
+        }
+
+        .count-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 24px;
+            padding: 40px 60px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .count-label {
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .count-time {
+            font-size: 60px;
+            font-weight: bold;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            letter-spacing: 4px;
+        }
+
+        /* 互动提问模块 */
+        .question-box {
+            text-align: center;
+            margin: 50px 0;
+            padding: 30px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 20px;
+        }
+
+        .question {
+            font-size: 24px;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .answer-btn {
+            padding: 15px 40px;
+            font-size: 20px;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(90deg, #ff6b9d, #c44569);
+            color: #fff;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        .answer-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255,107,157,0.5);
+        }
+
+        .tip-box {
+            margin-top: 30px;
+            font-size: 26px;
+            font-weight: bold;
+            color: #ffd700;
+            display: none;
+            text-shadow: 0 0 10px rgba(255,215,0,0.5);
+        }
+
+        /* 翻页按钮 */
+        .next-page {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .page-btn {
+            padding: 12px 30px;
+            font-size: 18px;
+            background: #fff;
+            color: #333;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .page-btn:hover {
+            background: #ffd700;
+            color: #000;
+        }
+
+        /* 第二页 毛笔励志墙 */
+        .motto-page {
+            display: none;
+            min-height: 100vh;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .motto-title {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 60px;
+            font-weight: bold;
+        }
+
+        /* 毛笔艺术字样式 遒劲有力 */
+        .motto {
+            position: relative;
+            font-family: "KaiTi", "STKaiti", serif;
+            font-weight: 900;
+            line-height: 1.4;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+        }
+
+        .m1 { font-size: 60px; color: #ffd700; position: absolute; top: 100px; left: 10%; }
+        .m2 { font-size: 45px; color: #fff; position: absolute; top: 220px; right: 15%; }
+        .m3 { font-size: 50px; color: #ff6b9d; position: absolute; top: 350px; left: 20%; }
+        .m4 { font-size: 40px; color: #fff; position: absolute; top: 480px; right: 25%; }
+        .m5 { font-size: 55px; color: #ffd700; position: absolute; top: 600px; left: 15%; }
+        .m6 { font-size: 42px; color: #fff; position: absolute; top: 730px; right: 10%; }
+        .m7 { font-size: 48px; color: #ff6b9d; position: absolute; top: 850px; left: 25%; }
+        .m8 { font-size: 38px; color: #fff; position: absolute; top: 970px; right: 20%; }
+
+        .back-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 30px;
+            font-size: 18px;
+            background: #fff;
+            color: #333;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            z-index: 99;
+        }
+
+        .back-btn:hover {
+            background: #ffd700;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 1. 音乐标签：彻底闭合，绝对不崩溃！！ -->
+<audio id="bgMusic" loop>
+    <source src="C:\Users\Administrator\Desktop\my_website\bgm.mp3" type="audio/mpeg">
+</audio>
+
+<!-- 2. 音乐图片按钮（你自己换这里的src为你的图片路径） -->
+<img src="C:\Users\Administrator\Desktop\my_website\images\kuanianewm.jpg" class="music-img" onclick="playMusic()" alt="播放音乐">
+
+<!-- 浮动星光 -->
+<div id="stars"></div>
+
+<!-- 首页 -->
+<div class="container" id="page1">
+    <h1 class="main-title">十年寒窗磨一剑，今朝出鞘试锋芒</h1>
+
+    <!-- 竖版超大倒计时 -->
+    <div class="count-wrap">
+        <div class="count-card">
+            <div class="count-label">2026甘肃高考倒计时</div>
+            <div class="count-time" id="gaokao"></div>
+        </div>
+        <div class="count-card">
+            <div class="count-label">2026甘肃中考倒计时</div>
+            <div class="count-time" id="zhongkao"></div>
+        </div>
+    </div>
+
+    <!-- 互动提问 -->
+    <div class="question-box">
+        <div class="question">今年你参加高考或中考吗？</div>
+        <div class="btn-group">
+            <button class="answer-btn" onclick="showTip(1)">参加</button>
+            <button class="answer-btn" onclick="showTip(2)">不参加</button>
+        </div>
+        <div class="tip-box" id="tip1">全力以赴，金榜题名！前程似锦，未来可期！</div>
+        <div class="tip-box" id="tip2">愿你以梦为马，不负韶华，明年今日，顶峰相见！</div>
+    </div>
+
+    <!-- 翻到励志墙 -->
+    <div class="next-page">
+        <button class="page-btn" onclick="goPage(2)">查看励志书法墙 →</button>
+    </div>
+</div>
+
+<!-- 第二页 毛笔励志墙 -->
+<div class="motto-page" id="page2">
+    <h2 class="motto-title">青春励志 · 笔墨锋芒</h2>
+    <div class="motto m1">宝剑锋从磨砺出</div>
+    <div class="motto m2">梅花香自苦寒来</div>
+    <div class="motto m3">长风破浪会有时</div>
+    <div class="motto m4">直挂云帆济沧海</div>
+    <div class="motto m5">乾坤未定 皆是黑马</div>
+    <div class="motto m6">以笔为剑 不负韶华</div>
+    <div class="motto m7">今朝试锋芒 金榜题名时</div>
+    <div class="motto m8">星光不问赶路人 时光不负有心人</div>
+
+    <button class="back-btn" onclick="goPage(1)">← 返回首页</button>
+</div>
+
+<script>
+    // 音乐播放（极简，无任何错误）
+    function playMusic() {
+        let audio = document.getElementById("bgMusic");
+        audio.play();
+    }
+
+    // 生成浮动星光
+    function createStars() {
+        const stars = document.getElementById('stars');
+        for(let i=0; i<150; i++) {
+            let star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 8 + 's';
+            star.style.animationDuration = (Math.random() * 4 + 4) + 's';
+            stars.appendChild(star);
+        }
+    }
+    createStars();
+
+    // 倒计时核心
+    const GAOKAO = new Date("2026-06-07");
+    const ZHONGKAO = new Date("2026-06-16");
+
+    function setCount(id, end) {
+        setInterval(() => {
+            let now = new Date();
+            let diff = end - now;
+            if(diff <= 0) {
+                document.getElementById(id).innerText = "考试加油！";
+                return;
+            }
+            let d = Math.floor(diff / (1000*60*60*24));
+            let h = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+            let m = Math.floor((diff % (1000*60*60)) / (1000*60));
+            let s = Math.floor((diff % (1000*60)) / 1000);
+            document.getElementById(id).innerText = `${d}天 ${h}时 ${m}分 ${s}秒`;
+        }, 1000);
+    }
+    setCount("gaokao", GAOKAO);
+    setCount("zhongkao", ZHONGKAO);
+
+    // 互动提示
+    function showTip(type) {
+        document.getElementById('tip1').style.display = 'none';
+        document.getElementById('tip2').style.display = 'none';
+        document.getElementById('tip'+type).style.display = 'block';
+    }
+
+    // 页面切换
+    function goPage(num) {
+        document.getElementById('page1').style.display = num === 1 ? 'block' : 'none';
+        document.getElementById('page2').style.display = num === 2 ? 'block' : 'none';
+    }
+</script>
+</body>
+</html>
